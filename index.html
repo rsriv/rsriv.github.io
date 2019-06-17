@@ -159,6 +159,7 @@
     </div>
 
     <script src="dist/js/main.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
 
     function sendEmail() {
@@ -166,10 +167,8 @@
         var emailAddress1 = "abc@gmail.com";//$(".emailInput").val();
         var emailAddress2 = "abc@gmail.com";
         var emailAddress = $(".emailInput").val();//emailAddress1? emailAddress1 : emailAddress2;
-        //alert("yuh");
         if (emailAddress == "" || !emailAddress.includes("@") || !emailAddress.includes(".")) {
-            //swal("Error!", "There was an issue with your email - if this issue persists, please email hello@elevatelabs.ca", "warning")
-            alert("yuh");
+            swal("Error!", "Please enter a valid email address. If this issue persists, please contact us at hi@cloutai.com", "warning")
             return;
         }
         $.ajax({
@@ -179,13 +178,15 @@
             data: JSON.stringify({email: emailAddress}),
             success: function (data) {
                     console.log('success');
-                    alert("yuh");
-                    swal("Success!", "We'll reach out to you when we get closer to launch!", "success")
+                    swal({
+                      title: "Thanks for signing up!",
+                      text: "We'll reach out to you when we get closer to launch. In the mean time, please feel free to reach out to hi@cloutai.com!",
+                      icon: "success",
+                    });
                 },
             error: function (data) {
-                    alert("yueh");
                     console.log('failure');
-                    swal("Error!", "There was an issue with your email - if this issue persists, email hello@elevatelabs.ca", "warning")
+                    swal("Error!", "Please enter a valid email address. If this issue persists, please contact us at hi@cloutai.com", "warning")
                 }
         });
     }
