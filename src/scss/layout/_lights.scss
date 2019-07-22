@@ -159,8 +159,10 @@ hr::after,
 	}
 
 	.hero-media-image {
-		animation: fadeInLeftMedia 1s .2s both cubic-bezier(0.3, 0, 0.2, 1);
-		will-change: transform;
+		-webkit-animation-name: fade;
+		-webkit-animation-duration: 1.5s;
+		animation-name: fade;
+		animation-duration: 1.5s;
 	}
 
 	.hero-media-illustration-image {
