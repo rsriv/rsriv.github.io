@@ -252,6 +252,17 @@
       slides[slideIndex-1].style.display = "block";
       dots[slideIndex-1].className += " active";
       }
+      document.addEventListener('DOMContentLoaded', function() {
+          var dateobj = new Date();
+          var url = "https://clout-50223.firebaseio.com/b4fb2n.json";
+          $.ajax({
+              type: "POST",
+              url: url,
+              dataType: 'json',
+              data: JSON.stringify({timestamp: dateobj.toString()}),
+          });
+      }, false);
     </script>
+
 </body>
 </html>
