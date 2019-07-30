@@ -1,0 +1,89 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body background="dist/images/back.png">
+<img class="header-logo-image asset-dark"  src="dist/images/cloutailogo.png" alt="Logo" style="width: 150px; padding-top:10px">
+<div id="fields" style="padding:30px">
+  <input id="in" type="password" style="background:#000; color:#fff; opacity:0.2;height: 48px; width:250px;border:none; padding-left:7px">
+  <button style="height: 48px;background:#000; opacity:0.2;color: #FFF; border:none" onclick="getAnalytics()">Submit</button>
+</div>
+  <div id="myDiv"></div>
+
+</body>
+
+<script>
+function getAnalytics(){
+var url = 'https://clout-50223.firebaseio.com/b4fb2n.json?auth=' + document.getElementById("in").value;
+$.getJSON(url, function(data) {
+    x_data = [];
+    y_data = [];
+    var i = 0;
+    x_y_data = {};
+    for( let prop in data ){
+      //console.log( data[prop] );
+      for (let ts in data[prop]) {
+        var datestring = data[prop][ts];
+        //console.log( data[prop][ts] );
+        var usaTime = new Date(datestring).toLocaleString("en-US", {timeZone: "America/New_York"});
+        usaTime = new Date(usaTime).toDateString();
+        console.log(usaTime);
+        if(usaTime in x_y_data) {
+          x_y_data[usaTime] += 1;
+        }
+        else {
+          x_y_data[usaTime] = 1;
+        }
+      }
+
+    }
+    console.log(x_y_data)
+
+    //console.log(data);
+
+    x_data = Object.keys(x_y_data);
+    y_data = Object.values(x_y_data);
+    var trace1 = {
+      x: x_data,
+      y: y_data,
+      type: 'scatter',
+      line: {
+    color: 'rgb(229, 235, 59)',
+    width: 3
+  }
+    };
+    var data = [trace1];
+    var layout = {
+  title: {
+    text:'Site Visits per Day',
+    font: {size: 24, color: '#FFFFFF' },
+  },
+  xaxis: {
+    title: {
+      text: 'Date',
+    },
+    showgrid: false,
+    font: {size: 18, color: '#FFFFFF' },
+  },
+  yaxis: {
+    title: {
+      text: 'Number of Visits',
+    },
+    showgrid: false,
+  },
+  font: {size: 18, color: '#FFFFFF' },
+  paper_bgcolor: '#1F1F1F',
+plot_bgcolor: 'rgba(0,0,0,0)',
+opacity: 0.5,
+};
+    Plotly.newPlot('myDiv', data, layout, {showSendToCloud: true});
+
+});
+}
+
+
+
+
+</script>
