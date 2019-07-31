@@ -1,5 +1,7 @@
 <head>
-  <!-- Plotly.js -->
+  <title>
+    Analytics
+  </title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
@@ -11,6 +13,7 @@
   <button style="height: 48px;background:#000; opacity:0.2;color: #FFF; border:none" onclick="getAnalytics()">Submit</button>
 </div>
   <div id="myDiv"></div>
+  <div id="myDiv2" style="padding-top:10px"></div>
 
 </body>
 
@@ -22,29 +25,51 @@ $.getJSON(url, function(data) {
     y_data = [];
     var i = 0;
     x_y_data = {};
+    x_data_h = [];
+    y_data_h = [];
+    x_y_data_h = {};
+    var tmp = new Date("Thu Jul 25 2019 16:00:00 GMT-0400 (Pacific Daylight Time)");
+    while(tmp < new Date()){
+      if (tmp.toString() in x_y_data_h) {
+
+      } else {
+        x_y_data_h[tmp.toString()] = 0;
+      }
+      tmp.setMinutes(tmp.getMinutes() + 60);
+    }
     for( let prop in data ){
       //console.log( data[prop] );
       for (let ts in data[prop]) {
         var datestring = data[prop][ts];
-        //console.log( data[prop][ts] );
+        console.log( data[prop][ts] );
         var usaTime = new Date(datestring).toLocaleString("en-US", {timeZone: "America/New_York"});
+        var hr = new Date(usaTime);
+        hr.setSeconds(0);
+        hr.setMinutes(0);
+        hr = hr.toString();
         usaTime = new Date(usaTime).toDateString();
-        console.log(usaTime);
         if(usaTime in x_y_data) {
           x_y_data[usaTime] += 1;
         }
         else {
           x_y_data[usaTime] = 1;
         }
+        if(hr in x_y_data_h) {
+          x_y_data_h[hr] += 1;
+        }
       }
-
     }
-    console.log(x_y_data)
+
+    console.log(x_y_data_h);
+
+
 
     //console.log(data);
 
     x_data = Object.keys(x_y_data);
     y_data = Object.values(x_y_data);
+    x_data_h = Object.keys(x_y_data_h);
+    y_data_h = Object.values(x_y_data_h);
     var trace1 = {
       x: x_data,
       y: y_data,
@@ -52,38 +77,69 @@ $.getJSON(url, function(data) {
       line: {
     color: 'rgb(229, 235, 59)',
     width: 3
-  }
+  }};
+  var trace2 = {
+    x: x_data_h,
+    y: y_data_h,
+    type: 'scatter',
+    line: {
+      color: 'rgb(229, 235, 59)',
+      width: 3
+    }};
+
+  var data = [trace1];
+  var data_h = [trace2];
+  var layout = {
+      title: {
+        text:'Site Visits Daily',
+        font: {size: 24, color: '#FFFFFF' },
+      },
+      xaxis: {
+        title: {
+          text: 'Date',
+        },
+        showgrid: false,
+        font: {size: 18, color: '#FFFFFF' },
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Visits',
+        },
+        showgrid: false,
+      },
+      font: {size: 18, color: '#FFFFFF' },
+      paper_bgcolor: '#1F1F1F',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    opacity: 0.5,
     };
-    var data = [trace1];
-    var layout = {
-  title: {
-    text:'Site Visits per Day',
-    font: {size: 24, color: '#FFFFFF' },
-  },
-  xaxis: {
-    title: {
-      text: 'Date',
-    },
-    showgrid: false,
-    font: {size: 18, color: '#FFFFFF' },
-  },
-  yaxis: {
-    title: {
-      text: 'Number of Visits',
-    },
-    showgrid: false,
-  },
-  font: {size: 18, color: '#FFFFFF' },
-  paper_bgcolor: '#1F1F1F',
-plot_bgcolor: 'rgba(0,0,0,0)',
-opacity: 0.5,
-};
+
+  var layout2 = {
+      title: {
+        text:'Site Visits Hourly',
+        font: {size: 24, color: '#FFFFFF' },
+      },
+      xaxis: {
+        title: {
+          text: 'Hour',
+        },
+        showgrid: false,
+        font: {size: 18, color: '#FFFFFF' },
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Visits',
+        },
+        showgrid: false,
+      },
+      font: {size: 18, color: '#FFFFFF' },
+      paper_bgcolor: '#1F1F1F',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    opacity: 0.5,
+    };
+
     Plotly.newPlot('myDiv', data, layout, {showSendToCloud: true});
+    Plotly.newPlot('myDiv2', data_h, layout2, {showSendToCloud: true});
 
 });
 }
-
-
-
-
 </script>
