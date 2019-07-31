@@ -194,8 +194,6 @@
 
     function sendEmail() {
         var url = "https://clout-50223.firebaseio.com/a8fn9a.json";
-        var emailAddress1 = "abc@gmail.com";//$(".emailInput").val();
-        var emailAddress2 = "abc@gmail.com";
         var emailAddress = $(".emailInput").val();//emailAddress1? emailAddress1 : emailAddress2;
         if (emailAddress == "" || !emailAddress.includes("@") || !emailAddress.includes(".")) {
             swal("Error!", "Please enter a valid email address. If this issue persists, please contact us at hi@cloutai.com", "warning")
@@ -205,7 +203,7 @@
             type: "POST",
             url: url,
             dataType: 'json',
-            data: JSON.stringify({email: emailAddress}),
+            data: JSON.stringify({email: emailAddress, timestamp: (new Date()).toString()}),
             success: function (data) {
                     console.log('success');
                     swal({
