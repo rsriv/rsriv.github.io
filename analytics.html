@@ -1,6 +1,6 @@
 <head>
   <title>
-    Analytics
+    Analytics | Clout AI
   </title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -11,8 +11,15 @@
 <div id="fields" style="padding:30px">
   <input id="in" type="password" style="background:#000; color:#fff; opacity:0.2;height: 48px; width:250px;border:none; padding-left:7px">
   <button style="height: 48px;background:#000; opacity:0.2;color: #FFF; border:none" onclick="getAnalytics()">Submit</button>
+<button id="refresh" style="overflow:hidden;float: right;display:none;height: 48px;background:#000; opacity:0.2;color: #FFF; border:none" onclick="getAnalytics()">Refresh</button>
 </div>
-  <div id="myDiv"></div>
+
+
+
+  <div id="myDiv">
+
+
+  </div>
   <div id="myDiv2" style="padding-top:10px"></div>
 
 </body>
@@ -141,5 +148,6 @@ $.getJSON(url, function(data) {
     Plotly.newPlot('myDiv2', data_h, layout2, {showSendToCloud: true});
 
 });
+  document.getElementById("refresh").style.display = "block";
 }
 </script>
